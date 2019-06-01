@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SDS Binder{% endblock %}
+
+{% block body %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="/">
+			SDS Binder
+		</a>
+	</nav>
+	<div class="container" align="center">
+		<h3>Are you sure to delete ({{id}}) {{name}}?</h3>
+		<form id="main_form">
+			<input type="hidden" name="id" value="{{id}}">
+			<button id="delete_btn" type="button" class="btn btn-danger">Delete</button>
+		</form>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	{{parent()}}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#delete_btn').on("click", function(e) {
+				const form = $('#main_form');
+				const formData = new FormData(form[0]);
+
+				$.ajax({
+					url: "/api/item/remove",
+					type: "post",
+					dataType: "html",
+					data: formData,
+					cache: false,
+					contentType: false,
+					processData: false
+				})
+				.done(function(res){
+					window.location.href = "/";
+				});
+
+				
+			});
+		});
+	</script>
+{% endblock %}

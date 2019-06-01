@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SDS Binder{% endblock %}
+
+{% block body %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="/">
+			SDS Binder
+		</a>
+		<div class="collapse navbar-collapse ">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="btn btn-sm btn-secondary" href="/new">New</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<table class="table">
+	<thead>
+		<tr class="table-active">
+			<th scope="col">Product Name</th>
+			<th scope="col">Item # / SDS #</th>
+			<th scope="col">Manufacturer</th>
+			<th scope="col">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for item in items %}
+		<tr>
+			<td>{{item.name}}</td>
+			<td>{{item.sds}}</td>
+			<td>{{item.manufacturer}}</td>
+			<td>
+				<a href="{{item.path}}"><i class="fa fa-download"></i></a>
+				<a href="/edit/{{item.id}}"><i class="fa fa-pencil-square-o"></i></a>
+				<a href="/delete/{{item.id}}"><i class="fa fa-times"></i></a>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<div align="center">
+		Pages
+		{% for i in 1..pages %}
+			<a href="/?page={{i}}">{{i}}</a>
+		{% endfor %}
+</div>
+{% endblock %}

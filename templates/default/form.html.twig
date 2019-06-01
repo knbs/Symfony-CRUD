@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SDS Binder{% endblock %}
+
+{% block body %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="/">
+			SDS Binder
+		</a>
+	</nav>
+	<form id="main_form">
+		<div class="container">
+			<input type="hidden" name="id" value="{{id}}">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="title_input">Title</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="title_input" name="name" value="{{name}}" required>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="file_input">File</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="file" class="form-control" id="file_input" name="file" {% if not id %}required{% endif %}>
+							{% if id %}
+								<small class="form-text text-muted">Current file: "<a href="{{path}}">{{path}}</a>". Select a new one if you want to update it. </small>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="manufacturer_input">Manufacturer</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="manufacturer_input" name="manufacturer" value="{{manufacturer}}" required>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-sm-4" style="text-align: right;">
+							<label for="sds_input">Item # / MSDS #</label>
+						</div>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="sds_input" name="sds" value="{{sds}}" required>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<br/>
+	<div class="alert alert-primary" role="alert"> Please only PDF files </div>
+	<div style="text-align: center;">
+		<button id="save_btn" type="submit" class="btn btn-outline-primary">Save</button>
+	</div>
+	</form>
+	<div id="send_status"> </div>
+{% endblock %}
+{% block javascripts %}
+	{{parent()}}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			// $('#save_btn').on("click", function(e) {
+			// 	$('#main_form').trigger('submit');
+			// 	console.dir("asdasd");
+			// });
+			$('#main_form').on("submit", function(e) {
+				e.preventDefault();
+				const formData = new FormData(this);
+				$.ajax({
+					url: "/api/item/new_edit",
+					type: "post",
+					dataType: "html",
+					data: formData,
+					cache: false,
+					contentType: false,
+					processData: false
+				})
+				.done(function(res){
+					window.location.href = "/";
+				});
+			});
+		});
+	</script>
+{% endblock %}
