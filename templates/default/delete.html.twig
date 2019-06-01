@@ -12,7 +12,7 @@
 		<h3>Are you sure to delete ({{id}}) {{name}}?</h3>
 		<form id="main_form">
 			<input type="hidden" name="id" value="{{id}}">
-			<button id="delete_btn" type="button" class="btn btn-danger">Delete</button>
+			<button id="delete_btn" type="submit" class="btn btn-danger">Delete</button>
 		</form>
 	</div>
 {% endblock %}
@@ -20,9 +20,9 @@
 	{{parent()}}
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('#delete_btn').on("click", function(e) {
-				const form = $('#main_form');
-				const formData = new FormData(form[0]);
+			$('#main_form').on("click", function(e) {
+				e.preventDefault();
+				const formData = new FormData(this);
 
 				$.ajax({
 					url: "/api/item/remove",
@@ -36,8 +36,6 @@
 				.done(function(res){
 					window.location.href = "/";
 				});
-
-				
 			});
 		});
 	</script>

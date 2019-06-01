@@ -15,17 +15,14 @@ class DefaultController extends AbstractController
      * @Route("/", name="home")
      */
     public function index(Request $request, EntityManagerInterface $em) {
-    	$repository = $em->getRepository(items::class);
-
-
     	$page = (int)$request->query->get("page")?: 1;
     	$page = $page < 1 ? 1 : $page;
         $limit = 5;
         $offset = $limit * ($page - 1);
 
+    	$repository = $em->getRepository(items::class);
         $count = (int)$repository->createQueryBuilder('a')->select('count(a.id)')->getQuery()->getSingleScalarResult();
         $pages = ceil($count/$limit);
-
 
         $data = [
         	"items" => $repository->findBy([], [], $limit, $offset),

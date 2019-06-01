@@ -68,10 +68,6 @@
 	{{parent()}}
 	<script type="text/javascript">
 		$(document).ready(function(){
-			// $('#save_btn').on("click", function(e) {
-			// 	$('#main_form').trigger('submit');
-			// 	console.dir("asdasd");
-			// });
 			$('#main_form').on("submit", function(e) {
 				e.preventDefault();
 				const formData = new FormData(this);
